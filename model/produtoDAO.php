@@ -2,6 +2,7 @@
 
 include_once 'conexao.php';
 include_once 'produto.php';
+include_once 'categoriaDAO.php';
 
 class ProdutoDAO {
 
@@ -92,12 +93,22 @@ class ProdutoDAO {
             $stmt->execute();
             $produtos = array();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $cat = new Categoria($row['idCategoria'], $row['nome'], $row['descricao'], $row['ativo']);
-                $produtos[] = $cat;
+                $prod = new Produto();
+                $prod->setId($row['idProduto']);
+                $prod->setCodigo($row['Codigo']);                
+                $prod->setNome($row['nome']);
+                $prod->setDescricao($row['descricao']);
+                $prod->setValor($row['valor']);
+                $prod->setUnidade($row['unidade']);
+                $prod->setQuantidade($row['quantidade']);
+                $prod->setAtivo($row['ativo']);
+                $catDao = new CategoriaDAO();
+                $prod->setCategoria($catDao->buscarPorId($row['idCategoria']));
+                $produtos[] = $prod;
             }
-            return $categorias;
+            return $produtos;
         } catch (Exception $e) {
-            echo 'erro ao listar';
+            echo $e->getMessage();
         }
     }
 
