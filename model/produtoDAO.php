@@ -3,7 +3,7 @@
 include_once 'conexao.php';
 include_once 'produto.php';
 
-class CategoriaDAO {
+class ProdutoDAO {
 
     public function inserir(Produto $prod) {
         try {
@@ -31,7 +31,7 @@ class CategoriaDAO {
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idProduto', $prod->getId());
             $stmt->bindValue(':codigo', $prod->getCodigo());
-            $stmt->bindValue(':idCategoria', $prod->getCategoria()->getCodigo());
+            $stmt->bindValue(':idCategoria', $prod->getCategoria()->getId());
             $stmt->bindValue(':nome', $prod->getNome());
             $stmt->bindValue(':descricao', $prod->getDescricao());
             $stmt->bindValue(':valor', $prod->getValor());
@@ -62,7 +62,7 @@ class CategoriaDAO {
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idProduto', $prod->getId());
             $stmt->bindValue(':codigo', $prod->getCodigo());
-            $stmt->bindValue(':idCategoria', $prod->getCategoria()->getCodigo());
+            $stmt->bindValue(':idCategoria', $prod->getCategoria()->getId());
             $stmt->bindValue(':nome', $prod->getNome());
             $stmt->bindValue(':descricao', $prod->getDescricao());
             $stmt->bindValue(':valor', $prod->getValor());
@@ -76,7 +76,7 @@ class CategoriaDAO {
     }
 
     public function listar() {
-        /*try {
+        try {
             $sql = 'SELECT idProduto,
                             Codigo,
                             idCategoria,
@@ -98,7 +98,7 @@ class CategoriaDAO {
             return $categorias;
         } catch (Exception $e) {
             echo 'erro ao listar';
-        }*/
+        }
     }
 
     public function deletar($idProduto) {

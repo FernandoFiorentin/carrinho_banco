@@ -1,5 +1,5 @@
 <?php
-include_once 'Categoria.php';
+include_once 'categoria.php';
 
 class Produto
 {
