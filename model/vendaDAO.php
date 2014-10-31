@@ -1,25 +1,25 @@
 <?php
 
 include_once 'conexao.php';
-include_once 'categoria.php';
+include_once 'venda.php';
 
-class CategoriaDAO {
+class VendaDAO {
 
-    public function inserir(Categoria $cat) {
+    public function inserir(Venda $vend) {
         try {
-            $sql = 'INSERT INTO categoria
-                     (nome,
-                     descricao,
-                     ativo)
+            $sql = 'INSERT INTO venda
+                     (cliente,
+                     desconto,
+                     data)
                      VALUES
-                     (:nome,
-                     :descricao,
-                     :ativo)';
+                     (:cliente,
+                     :desconto,
+                     :data)';
 
             $stmt = Conexao::getInstance()->prepare($sql);
-            $stmt->bindValue(':nome', $cat->getNome());
-            $stmt->bindValue(':descricao', $cat->getDescricao());
-            $stmt->bindValue(':ativo', $cat->getAtivo());
+            $stmt->bindValue(':cliente', $vend->getCliente());
+            $stmt->bindValue(':desconto', $vend->getDesconto());
+            $stmt->bindValue(':data', $vend->getData());
             return $stmt->execute();
         } catch (Exception $e) {
             echo $e->getMessage();
@@ -27,70 +27,70 @@ class CategoriaDAO {
         }
     }
 
-    public function editar(Categoria $cat) {
+    public function editar(Venda $vend) {
         try {
-            $sql = 'UPDATE categoria
+            $sql = 'UPDATE venda
                 SET                
-                nome = :nome,
-                descricao = :descricao,
-                ativo = :ativo                
-                WHERE idCategoria = :idCategoria;';
+                cliente = :cliente,
+                desconto = :desconto,
+                data = :data                
+                WHERE idVenda = :idVenda;';
 
             $stmt = Conexao::getInstance()->prepare($sql);
-            $stmt->bindValue(':idCategoria', $cat->getId());
-            $stmt->bindValue(':nome', $cat->getNome());
-            $stmt->bindValue(':descricao', $cat->getDescricao());
-            $stmt->bindValue(':ativo', $cat->getAtivo());
+            $stmt->bindValue(':cliente', $vend->getCliente());
+            $stmt->bindValue(':desconto', $vend->getDesconto());
+            $stmt->bindValue(':data', $vend->getData());
+            $stmt->bindValue(':idVenda', $vend->getId());
             return $stmt->execute();
         } catch (Exception $e) {
-            //echo $e->getMessage().'<br>';
-            echo 'erro ao editar';
+            echo $e->getMessage().'<br>';
+            //echo 'erro ao editar';
         }
     }
 
     public function listar() {
         try {
-            $sql = 'SELECT idCategoria,
-                    nome,
-                    descricao,
-                    ativo                    
-                    FROM categoria order by idCategoria';
+            $sql = 'SELECT idVenda,
+                    cliente,
+                    desconto,
+                    data                    
+                    FROM venda order by idVenda';
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->execute();
-            $categorias = array();
+            $vendas = array();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $cat = new Categoria($row['idCategoria'], $row['nome'], $row['descricao'], $row['ativo']);
-                $categorias[] = $cat;
+                $vend = new Venda($row['idVenda'], $row['cliente'], $row['desconto'], $row['data']);
+                $vendas[] = $vend;
             }
-            return $categorias;
+            return $vendas;
         } catch (Exception $e) {
-            echo 'erro ao listar';
+            echo $e->getMessage();
         }
     }
 
-    public function buscarPorId($id) {
+    public function buscarPorId($idVenda) {
         try {
-            $sql = 'SELECT idCategoria,
-                    nome,
-                    descricao,
-                    ativo                    
-                    FROM categoria where idCategoria = :idCategoria';
+            $sql = 'SELECT idVenda,
+                    cliente,
+                    desconto,
+                    data                    
+                    FROM venda where idVenda = :idVenda';
 
             $stmt = Conexao::getInstance()->prepare($sql);
-            $stmt->bindValue(':idCategoria', $id);
+            $stmt->bindValue(':idVenda', $id);
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            $cat = new Categoria($row['idCategoria'], $row['nome'], $row['descricao'], $row['ativo']);
+            $vend = new Venda($row['idVenda'], $row['cliente'], $row['desconto'], $row['data']);
             return $cat;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    public function deletar($idCategoria) {
+    public function deletar($idVenda) {
         try {
-            $sql = 'delete from categoria where idCategoria = :idCategoria';
+            $sql = 'delete from venda where idVenda = :idVenda';
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idCategoria', $idCategoria);
             return $stmt->execute();
@@ -101,29 +101,4 @@ class CategoriaDAO {
 
 }
 
-/*
-
-  calss CategoriaDAO
-  {
-  function __construct()
-  {
-  include_once 'abreConexao.php';
-  include_once 'categoria.php'
-  }
-
-  public function insert(Categoria $categoria)
-  {
-  $stmt = $con->prepare(
-  'insert into categoria(nome, descricao, ativo) values(:nome, :descricao, :ativo)';
-  );
-
-  $stmt->bindValue(':nome',$categoria->getNome());
-  $stmt->bindValue(':descricao',$categoria->getDescricao());
-  $stmt->bindValue(':ativo',$categoria->getAtivo());
-
-  $stmt->execute();
-  $stmt->commit();
-  }
-
-  } */
 ?>
