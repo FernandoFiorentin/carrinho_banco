@@ -72,7 +72,7 @@ class ProdutoDAO {
             $stmt->bindValue(':ativo', $prod->getAtivo());
             return $stmt->execute();
         } catch (Exception $e) {
-            echo $e->getMessage().'<br>';            
+            echo $e->getMessage() . '<br>';
         }
     }
 
@@ -95,7 +95,7 @@ class ProdutoDAO {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 $prod = new Produto();
                 $prod->setId($row['idProduto']);
-                $prod->setCodigo($row['Codigo']);                
+                $prod->setCodigo($row['Codigo']);
                 $prod->setNome($row['nome']);
                 $prod->setDescricao($row['descricao']);
                 $prod->setValor($row['valor']);
@@ -107,6 +107,45 @@ class ProdutoDAO {
                 $produtos[] = $prod;
             }
             return $produtos;
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+    }
+
+    public function buscarPorId($idProduto) {
+        try {
+            $sql = 'SELECT idProduto,
+                            Codigo,
+                            idCategoria,
+                            nome,
+                            descricao,
+                            valor,
+                            unidade,
+                            quantidade,
+                            ativo
+                        FROM produto where idProduto = :idProduto';
+
+            $stmt = Conexao::getInstance()->prepare($sql);
+            $stmt->bindValue(':idProduto',$idProduto);
+            $stmt->execute();
+            $prod = new Produto();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            echo '<pre>';
+            print_r($row);
+            echo '</pre>';
+            //exit();
+            $prod->setId($row['idProduto']);
+            $prod->setCodigo($row['Codigo']);
+            $prod->setNome($row['nome']);
+            $prod->setDescricao($row['descricao']);
+            $prod->setValor($row['valor']);
+            $prod->setUnidade($row['unidade']);
+            $prod->setQuantidade($row['quantidade']);
+            $prod->setAtivo($row['ativo']);
+            $catDao = new CategoriaDAO();
+            $prod->setCategoria($catDao->buscarPorId($row['idCategoria']));
+
+            return $prod;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -125,29 +164,4 @@ class ProdutoDAO {
 
 }
 
-/*
-
-  calss CategoriaDAO
-  {
-  function __construct()
-  {
-  include_once 'abreConexao.php';
-  include_once 'categoria.php'
-  }
-
-  public function insert(Categoria $categoria)
-  {
-  $stmt = $con->prepare(
-  'insert into categoria(nome, descricao, ativo) values(:nome, :descricao, :ativo)';
-  );
-
-  $stmt->bindValue(':nome',$categoria->getNome());
-  $stmt->bindValue(':descricao',$categoria->getDescricao());
-  $stmt->bindValue(':ativo',$categoria->getAtivo());
-
-  $stmt->execute();
-  $stmt->commit();
-  }
-
-  } */
 ?>
