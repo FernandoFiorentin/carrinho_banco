@@ -55,8 +55,9 @@ class ItemDAO {
                     idProduto,
                     idVenda,
                     quantidade                    
-                    FROM item order by idItem
-                    where idVenda = :idVenda';
+                    FROM item 
+                    where idVenda = :idVenda
+                    order by idItem';
             
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idVenda',$idVenda);

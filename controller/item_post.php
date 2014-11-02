@@ -29,9 +29,9 @@ else
 					  $produto,
 					  $_POST['venda'],
 					  $_POST['quantidade']);
-echo '<pre>';
-print_r($item);
-echo '</pre>';
+//echo '<pre>';
+//print_r($item);
+//echo '</pre>';
 	//exit;
 	$itemController->adicionarItem($item);
 }
