@@ -49,14 +49,17 @@ class ItemDAO {
         }
     }
 
-    public function listar() {
+    public function listar($idVenda) {
         try {
             $sql = 'SELECT idItem,
                     idProduto,
                     idVenda,
                     quantidade                    
-                    FROM item order by idItem';
+                    FROM item order by idItem
+                    where idVenda = :idVenda';
+            
             $stmt = Conexao::getInstance()->prepare($sql);
+            $stmt->bindValue(':idVenda',$idVenda);
             $stmt->execute();
             $itens = array();
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
