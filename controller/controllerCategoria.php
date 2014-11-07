@@ -37,7 +37,7 @@ class CategoriaController {
     
     public function excluirCategoria($id) {
        $catDao = new CategoriaDAO();
-       return $catDao->deletar();         
+       return $catDao->deletar($id);         
     }
 
 }
