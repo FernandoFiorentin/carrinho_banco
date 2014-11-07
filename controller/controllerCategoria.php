@@ -20,7 +20,7 @@ class CategoriaController {
             return $catDao->listar();         
     }
 
-    public function getById($id) {
+    public function buscarPorId($id) {
         $catDao = new CategoriaDAO();
         return $catDao->buscarPorId($id);         
     }

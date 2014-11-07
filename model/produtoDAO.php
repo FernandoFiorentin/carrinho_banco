@@ -130,9 +130,9 @@ class ProdutoDAO {
             $stmt->execute();
             $prod = new Produto();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            echo '<pre>';
-            print_r($row);
-            echo '</pre>';
+            //echo '<pre>';
+            //print_r($row);
+            //echo '</pre>';
             //exit();
             $prod->setId($row['idProduto']);
             $prod->setCodigo($row['Codigo']);

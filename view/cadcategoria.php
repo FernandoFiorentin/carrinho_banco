@@ -14,11 +14,11 @@ include_once '../model/categoria.php';
     $catController = new CategoriaController();
     if (isset($_GET['acao'])) {
         if ($_GET['acao'] == 'editar') {
-            $categoria = $catController->getById($_GET['cat']);
+            $categoria = $catController->buscarPorId($_GET['cat']);
         }
         $acao = $_GET['acao'];
     } else {
-        $categoria = new Categoria('', '', '', '');
+        $categoria = new Categoria();
         $acao = 'inserir';
     }
     ?>
