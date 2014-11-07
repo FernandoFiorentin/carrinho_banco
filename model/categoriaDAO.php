@@ -6,6 +6,7 @@ include_once 'categoria.php';
 class CategoriaDAO {
 
     public function inserir(Categoria $cat) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'INSERT INTO categoria
                      (nome,
@@ -20,14 +21,18 @@ class CategoriaDAO {
             $stmt->bindValue(':nome', $cat->getNome());
             $stmt->bindValue(':descricao', $cat->getDescricao());
             $stmt->bindValue(':ativo', $cat->getAtivo());
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();
+            return $result;
         } catch (Exception $e) {
             echo $e->getMessage();
+            Conexao::getInstance()->rollback();
             //GeraLog::getInstance()->inserirLog("Erro: Código: " . $e->getCode() . " Mensagem: " . $e->getMessage());            
         }
     }
 
     public function editar(Categoria $cat) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'UPDATE categoria
                 SET                
@@ -41,14 +46,17 @@ class CategoriaDAO {
             $stmt->bindValue(':nome', $cat->getNome());
             $stmt->bindValue(':descricao', $cat->getDescricao());
             $stmt->bindValue(':ativo', $cat->getAtivo());
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();
+            return $result;
         } catch (Exception $e) {
             //echo $e->getMessage().'<br>';
             echo 'erro ao editar';
+            Conexao::getInstance()->rollback();
         }
     }
 
-    public function listar() {
+    public function listar() {        
         try {
             $sql = 'SELECT idCategoria,
                     nome,
@@ -69,6 +77,7 @@ class CategoriaDAO {
     }
 
     public function buscarPorId($id) {
+        
         try {
             $sql = 'SELECT idCategoria,
                     nome,
@@ -89,13 +98,17 @@ class CategoriaDAO {
     }
 
     public function deletar($idCategoria) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'delete from categoria where idCategoria = :idCategoria';
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idCategoria', $idCategoria);
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();
+            return $result;
         } catch (Exception $ex) {
             echo 'erro ao deletar';
+            Conexao::getInstance()->rollback();
         }
     }
 
