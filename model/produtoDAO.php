@@ -7,6 +7,7 @@ include_once 'categoriaDAO.php';
 class ProdutoDAO {
 
     public function inserir(Produto $prod) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'insert into produto 
                     (idProduto,
@@ -39,14 +40,18 @@ class ProdutoDAO {
             $stmt->bindValue(':unidade', $prod->getUnidade());
             $stmt->bindValue(':quantidade', $prod->getQuantidade());
             $stmt->bindValue(':ativo', $prod->getAtivo());
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();
+            return $result;
         } catch (Exception $e) {
             echo $e->getMessage();
+            Conexao::getInstance()->rollback();
             //GeraLog::getInstance()->inserirLog("Erro: Código: " . $e->getCode() . " Mensagem: " . $e->getMessage());            
         }
     }
 
     public function editar(Produto $prod) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'UPDATE produto
                     SET                                    
@@ -70,9 +75,12 @@ class ProdutoDAO {
             $stmt->bindValue(':unidade', $prod->getUnidade());
             $stmt->bindValue(':quantidade', $prod->getQuantidade());
             $stmt->bindValue(':ativo', $prod->getAtivo());
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();
+            return $result;
         } catch (Exception $e) {
             echo $e->getMessage() . '<br>';
+            Conexao::getInstance()->rollback();
         }
     }
 
@@ -152,13 +160,17 @@ class ProdutoDAO {
     }
 
     public function deletar($idProduto) {
+        Conexao::getInstance()->beginTransaction();
         try {
             $sql = 'delete from produto where idProduto = :idProduto';
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idProduto', $idProduto);
-            return $stmt->execute();
+            $result = $stmt->execute();
+            Conexao::getInstance()->commit();            
+            return $result;
         } catch (Exception $ex) {
-            echo 'erro ao deletar';
+            $ex->getMessage();
+            Conexao::getInstance()->rollback();            
         }
     }
 

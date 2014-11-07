@@ -28,7 +28,7 @@ class ProdutoController {
 
     public function excluirProduto($id) {
         $prodDao = new ProdutoDAO();
-        return $prodDao->deletar($prod);
+        return $prodDao->deletar($id);
     }
 
 }
