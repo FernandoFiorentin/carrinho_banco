@@ -8,20 +8,20 @@ class ProdutoController {
 
     public function listarProdutos() {
         $prodDao = new ProdutoDAO();
-        return $prodDao->listar();        
+        return $prodDao->listar();
     }
 
-    public function buscarPorId($id) {        
+    public function buscarPorId($id) {
         $prodDao = new ProdutoDAO();
-        return $prodDao->buscarPorId($id);                
+        return $prodDao->buscarPorId($id);
     }
 
     public function inserirProduto(Produto $prod) {
         $prodDao = new ProdutoDAO();
         return $prodDao->inserir($prod);
     }
-    
-     public function editarProduto(Produto $prod) {
+
+    public function editarProduto(Produto $prod) {
         $prodDao = new ProdutoDAO();
         return $prodDao->editar($prod);
     }
