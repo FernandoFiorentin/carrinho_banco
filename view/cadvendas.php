@@ -17,14 +17,17 @@
 		
 		<?php
 			$vendController = new VendaController();
-
-			if(isset($_GET['vend']))
-			{
-				$venda = $vendController->getById($_GET['vend']);				
+			if(isset($_GET['acao']))
+            {
+                if($_GET['acao'] == 'editar'){
+                    $venda = $vendController->getById($_GET['vend']);				
+                }
+                $acao = $_GET['acao'];
 			}
 			else
 			{
-				$venda = new Venda('','','','');
+                $venda = new Venda();
+                $acao = 'inserir';
 			}	
 		?>
 

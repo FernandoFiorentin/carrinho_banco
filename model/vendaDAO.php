@@ -32,7 +32,6 @@ class VendaDAO {
             return $stmt->execute();
         } catch (Exception $e) {
             echo $e->getMessage();
-            //GeraLog::getInstance()->inserirLog("Erro: Código: " . $e->getCode() . " Mensagem: " . $e->getMessage());            
         }
     }
 
