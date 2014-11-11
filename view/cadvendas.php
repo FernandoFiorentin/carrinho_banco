@@ -19,7 +19,7 @@ include_once '../model/venda.php';
     $vendController = new VendaController();
     if (isset($_GET['acao'])) {
         if ($_GET['acao'] == 'editar') {
-            $venda = $vendController->getById($_GET['vend']);
+            $venda = $vendController->buscarPorId($_GET['vend']);
         }
         $acao = $_GET['acao'];
     } else {
@@ -28,7 +28,7 @@ include_once '../model/venda.php';
     }
     ?>
 
-    <form name="CadVenda" method="post" action="../controller/venda_post.php">
+    <form name="CadVenda" method="post" action="../controller/preControllerVenda.php">
         <input type="hidden" name="acao" value="<?php echo $acao; ?>">
         ID        <input type="text" name="id" value=<?php echo '"' . $venda->getId() . '"' ?> ><br>
         Cliente   <input type="text" name="cliente" value=<?php echo '"' . $venda->getCliente() . '"' ?> ><br>
@@ -36,7 +36,7 @@ include_once '../model/venda.php';
         Data      <input type="text" name="data" value=<?php echo '"' . $venda->getData() . '"' ?> ><br>
         <input type="button" value="Novo" onclick="location.href = 'cadvendas.php'">
         <input type="submit" value="Cadastrar">        
-        <input type="button" value="Excluir" onclick=<?php echo "location.href='../controller/venda_post.php?acao=excluir&idvenda=" . $venda->getId() . "';" ?> >
+        <input type="button" value="Excluir" onclick=<?php echo "location.href='../controller/preControllerVenda.php?acao=excluir&idvenda=" . $venda->getId() . "';" ?> >
     </form>
 
     <table border="1px solid" style="border-collapse: collapse;">			
@@ -56,7 +56,7 @@ include_once '../model/venda.php';
             echo '<td>' . $vend->getCliente() . '</td>';
             echo '<td>' . $vend->getDesconto() . '</td>';
             echo '<td>' . $vend->getValorTotal() . '</td>';
-            echo '<td width="35px" align="center"><a href="cadvendas.php?vend=' . $vend->getId() . '"><img src="../img/editar.jpg" title="editar"></a></td>';
+            echo '<td width="35px" align="center"><a href="cadvendas.php?acao=editar&vend=' . $vend->getId() . '"><img src="../img/editar.jpg" title="editar"></a></td>';
             echo '<td width="35px" align="center"><a href="caditens.php?vend=' . $vend->getId() . '"><img src="../img/mais.jpg" title="Itens"></a></td>';
             echo '</tr>';
         }
