@@ -2,64 +2,31 @@
 
 class VendaController {
 
-    public function iniciaSessao() {
-        if (!isset($_SESSION['Vendas'])) {
-            $_SESSION['Vendas'] = serialize(array());
-        }
+    private $vendaDao;
+    
+    public function __construct() {
+        include_once '../model/VendaDAO.php';
+        $this->vendaDao = new VendaDAO();
     }
-
+   
     public function listarVendas() {
-        if (isset($_SESSION['Vendas'])) {
-            return unserialize($_SESSION['Vendas']);
-        } else {
-            return array();
-        }
+       return $this->vendaDao->listar();
     }
 
-    public function getById($id) {
-        if (isset($_SESSION['Vendas'])) {
-            $vendas = unserialize($_SESSION['Vendas']);
-            foreach ($vendas as $vend) {
-                if ($vend->getId() == $id) {
-                    return $vend;
-                }
-            }
-        }
+    public function buscarPorId($idVenda) {
+        return $this->vendaDao->buscarPorId($idVenda);
     }
 
-    public function adicionarVenda(Venda $vend) {
-        if (isset($_SESSION['Vendas']) and $vend->getId() > 0) {
-            $vendas = unserialize($_SESSION['Vendas']);
-            for ($i = 0; $i < count($vendas); $i++) {
-                if ($vendas[$i]->getId() == $vend->getId()) {
-                    $vendas[$i] = $vend;
-                    $_SESSION['Vendas'] = serialize($vendas);
-                    return true;
-                }
-            }
-
-            $vendas[] = $vend;
-            $_SESSION['Vendas'] = serialize($vendas);
-            return true;
-        } else {
-            return false;
-        }
+    public function inserirVenda(Venda $vend) {
+        return $this->vendaDao->inserir($vend);
     }
 
-    public function excluirVenda($id) {
-        if (isset($_SESSION['Vendas'])) {
-            $vendas = unserialize($_SESSION['Vendas']);
-            for ($i = 0; $i < count($vendas); $i++) {
-                if ($vendas[$i]->getId() == $id) {
-                    if (isset($_SESSION['ItensVenda' . $id])) {
-                        unset($_SESSION['ItensVenda' . $id]);
-                    }
-                    unset($vendas[$i]);
-                    $_SESSION['Vendas'] = serialize(array_values($vendas));
-                    return true;
-                }
-            }
-        }
+    public function editarVenda(Venda $vend) {
+        return $this->vendaDao->editar($vend);
+    }
+    
+    public function excluirVenda($idVenda) {
+        return $this->vendaDao->deletar($idVenda);
     }
 
 }
