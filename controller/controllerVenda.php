@@ -5,7 +5,7 @@ class VendaController {
     private $vendaDao;
     
     public function __construct() {
-        include_once '../model/VendaDAO.php';
+        include_once '../model/vendaDAO.php';
         $this->vendaDao = new VendaDAO();
     }
    

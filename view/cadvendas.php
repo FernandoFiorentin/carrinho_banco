@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once '../controller/produto_controller.php';
-include_once '../controller/categoria_controller.php';
-include_once '../controller/venda_controller.php';
+include_once '../controller/controllerProduto.php';
+include_once '../controller/controllerCategoria.php';
+include_once '../controller/controllerVenda.php';
 include_once '../model/produto.php';
 include_once '../model/categoria.php';
 include_once '../model/venda.php';
@@ -47,20 +47,20 @@ include_once '../model/venda.php';
             <th>Desconto</th>
             <th>Total</th>
         </tr>
-<?php
-$vendas = $vendController->listarVendas();
-foreach ($vendas as $vend) {
-    echo '<tr>';
-    echo '<td>' . $vend->getId() . '</td>';
-    echo '<td>' . $vend->getData() . '</td>';
-    echo '<td>' . $vend->getCliente() . '</td>';
-    echo '<td>' . $vend->getDesconto() . '</td>';
-    echo '<td>' . $vend->getValorTotal() . '</td>';
-    echo '<td width="35px" align="center"><a href="cadvendas.php?vend=' . $vend->getId() . '"><img src="../img/editar.jpg" title="editar"></a></td>';
-    echo '<td width="35px" align="center"><a href="caditens.php?vend=' . $vend->getId() . '"><img src="../img/mais.jpg" title="Itens"></a></td>';
-    echo '</tr>';
-}
-?>
+        <?php
+        $vendas = $vendController->listarVendas();
+        foreach ($vendas as $vend) {
+            echo '<tr>';
+            echo '<td>' . $vend->getId() . '</td>';
+            echo '<td>' . $vend->getData() . '</td>';
+            echo '<td>' . $vend->getCliente() . '</td>';
+            echo '<td>' . $vend->getDesconto() . '</td>';
+            echo '<td>' . $vend->getValorTotal() . '</td>';
+            echo '<td width="35px" align="center"><a href="cadvendas.php?vend=' . $vend->getId() . '"><img src="../img/editar.jpg" title="editar"></a></td>';
+            echo '<td width="35px" align="center"><a href="caditens.php?vend=' . $vend->getId() . '"><img src="../img/mais.jpg" title="Itens"></a></td>';
+            echo '</tr>';
+        }
+        ?>
     </table>
 </body>
 </html>
