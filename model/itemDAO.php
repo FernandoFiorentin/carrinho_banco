@@ -69,20 +69,24 @@ class ItemDAO {
                 $item = new Item($row['idItem'], $prod, $row['idVenda'], $row['quantidade']);
                 $itens[] = $item;
             }
+            
             return $itens;
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
-    public function buscarPorId($idItem) {
+    public function buscarPorId($idItem, $idVenda) {
         try {
             $sql = 'SELECT idItem,
                     idProduto,
                     idVenda,
-                    quantidade                    
-                    FROM item order by idItem';
+                    quantidade  
+                    from item
+                    where idItem = :idItem and idVenda = :idVenda';
             $stmt = Conexao::getInstance()->prepare($sql);
+            $stmt->bindValue(':idItem',$idItem);
+            $stmt->bindValue(':idVenda',$idVenda);
             $stmt->execute();
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -92,15 +96,16 @@ class ItemDAO {
 
             return $item;
         } catch (Exception $e) {
-            echo $e->getMessage();
+            echo $e->getMessage();            
         }
     }
 
-    public function deletar($idItem) {
+    public function deletar($idItem, $idVenda) {
         try {
-            $sql = 'delete from item where idItem = :idItem';
+            $sql = 'delete from item where idItem = :idItem and idVenda = :idVenda';
             $stmt = Conexao::getInstance()->prepare($sql);
             $stmt->bindValue(':idItem', $idItem);
+            $stmt->bindValue(':idVenda', $idVenda);
             return $stmt->execute();
         } catch (Exception $ex) {
             echo 'erro ao deletar';
